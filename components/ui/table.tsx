@@ -1,9 +1,11 @@
 import React from "react";
 
-export type TableProps = {
+interface TableProps {
   headers: string[];
+  onHeaderClick?: (index: number) => void;
   children: React.ReactNode;
-};
+}
+
 
 export default function Table({ headers, children }: TableProps) {
   return (
