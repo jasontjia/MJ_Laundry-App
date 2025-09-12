@@ -7,15 +7,17 @@ export type Customer = {
   address?: string;
 };
 
-export type Order = {
+export interface Order {
   id: number;
   customer: Customer;
-  weight: number;
   service: string;
+  weight: number;
   price: number;
-  status: string;
-  payment: string;
-};
+  status: "pending" | "in-progress" | "completed" | "picked-up";
+  payment: "unpaid" | "partial" | "paid";
+  createdAt: string; // <-- tambahkan ini
+}
+;
 
 export interface Service {
   id: number;
