@@ -36,3 +36,8 @@ model Order {
   createdAt  DateTime @default(now())
 }
 
+model Service {
+  id    Int    @id @default(autoincrement())
+  name  String
+  price Int
+}

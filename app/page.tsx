@@ -5,7 +5,6 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white overflow-hidden relative">
-      
       {/* Background Animated Circles */}
       <div className="absolute top-0 left-0 w-full h-full -z-10">
         <div className="absolute w-72 h-72 bg-cyan-500/20 rounded-full animate-ping-slow blur-3xl -top-20 -left-20"></div>

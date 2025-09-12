@@ -21,28 +21,30 @@ const navItems = [
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // true = expanded
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
     <html lang="id">
-      <body className="flex h-screen bg-gray-900 text-white">
+      <body className="flex h-screen bg-gray-900 text-white overflow-hidden">
         {/* Sidebar */}
         <aside
           className={`bg-gray-800 flex flex-col transition-all duration-300
             ${sidebarOpen ? 'w-64' : 'w-20'}
           `}
         >
-          <div className="px-4 py-4 flex justify-between items-center">
+          {/* Logo + Toggle */}
+          <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
             {sidebarOpen && <span className="text-2xl font-bold text-cyan-400">MJ Laundry</span>}
             <button
-              className="text-cyan-300"
+              className="text-cyan-300 p-1 hover:bg-gray-700 rounded"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <HiMenu className="w-6 h-6" />
             </button>
           </div>
 
-          <nav className="flex-1 px-2 mt-4 space-y-2">
+          {/* Navigation */}
+          <nav className="flex-1 mt-4 px-2 space-y-2 overflow-y-auto">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -57,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ))}
           </nav>
 
+          {/* Footer */}
           {sidebarOpen && (
             <footer className="px-4 py-4 text-sm text-gray-400 border-t border-gray-700">
               &copy; {new Date().getFullYear()} MJ Laundry
@@ -64,9 +67,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           )}
         </aside>
 
-        {/* Main content */}
-        <main className="flex-1 overflow-auto p-6">
-          <header className="flex justify-between items-center mb-6">
+        {/* Main Content */}
+        <main className="flex-1 flex flex-col overflow-auto">
+          {/* Header */}
+          <header className="flex justify-between items-center p-6 border-b border-gray-700">
             <h1 className="text-3xl font-bold text-cyan-400 drop-shadow-[0_0_15px_cyan]">
               MJ Laundry
             </h1>
@@ -75,7 +79,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </header>
 
-          {children}
+          {/* Page content */}
+          <div className="flex-1 p-6 overflow-auto">{children}</div>
         </main>
       </body>
     </html>

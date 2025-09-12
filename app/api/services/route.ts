@@ -1,38 +1,32 @@
 import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
-let services = [
-  { id: 1, name: "Cuci Kering", price: 15000 },
-  { id: 2, name: "Cuci Basah + Setrika", price: 25000 },
-  { id: 3, name: "Setrika Saja", price: 10000 },
-];
+const prisma = new PrismaClient();
 
 export async function GET() {
+  const services = await prisma.service.findMany();
   return NextResponse.json(services);
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
-  const newService = {
-    id: services.length ? services[services.length - 1].id + 1 : 1,
-    name: body.name,
-    price: body.price,
-  };
-  services.push(newService);
-  return NextResponse.json(newService);
+  const { name, price } = await req.json();
+  const service = await prisma.service.create({ data: { name, price } });
+  return NextResponse.json(service);
 }
 
 export async function PATCH(req: Request) {
-  const body = await req.json();
-  const idx = services.findIndex((s) => s.id === body.id);
-  if (idx !== -1) {
-    services[idx] = { ...services[idx], ...body };
-  }
-  return NextResponse.json(services[idx]);
+  const { id, name, price } = await req.json();
+  const service = await prisma.service.update({
+    where: { id },
+    data: { name, price },
+  });
+  return NextResponse.json(service);
 }
 
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = Number(searchParams.get("id"));
-  services = services.filter((s) => s.id !== id);
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  await prisma.service.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }

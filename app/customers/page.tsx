@@ -156,10 +156,16 @@ export default function CustomersPage() {
         className="bg-gray-800 shadow-lg shadow-cyan-500/40 rounded-2xl p-6 flex flex-col md:flex-row gap-4 items-end transition-all duration-300"
       >
         {["Name", "Phone", "Address"].map((label) => {
-          const value = label === "Name" ? name : label === "Phone" ? phone : address;
-          const setValue = label === "Name" ? setName : label === "Phone" ? setPhone : setAddress;
+          const value =
+            label === "Name" ? name : label === "Phone" ? phone : address;
+          const setValue =
+            label === "Name" ? setName : label === "Phone" ? setPhone : setAddress;
           const placeholder =
-            label === "Name" ? "Enter customer name" : label === "Phone" ? "0812xxxxxx" : "Customer address";
+            label === "Name"
+              ? "Enter customer name"
+              : label === "Phone"
+              ? "0812xxxxxx"
+              : "Customer address";
 
           return (
             <div className="flex flex-col flex-1" key={label}>
@@ -167,7 +173,14 @@ export default function CustomersPage() {
               <input
                 type="text"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                  if (label === "Phone") {
+                    // cuma angka
+                    setValue(e.target.value.replace(/\D/g, ""));
+                  } else {
+                    setValue(e.target.value);
+                  }
+                }}
                 placeholder={placeholder}
                 className="border border-cyan-500 rounded-lg px-3 py-2 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 placeholder-gray-400 transition"
                 required
@@ -175,7 +188,6 @@ export default function CustomersPage() {
             </div>
           );
         })}
-
         <Button
           type="submit"
           className={`px-6 py-2 rounded-xl font-semibold transition-all duration-300 ${
@@ -187,7 +199,6 @@ export default function CustomersPage() {
           {editingId ? "Update" : "Add"}
         </Button>
       </form>
-
       {/* Entries info */}
       <div className="text-gray-300 text-sm">
         Showing {startEntry}-{endEntry} of {filtered.length} entries
