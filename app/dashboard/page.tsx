@@ -70,7 +70,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8 space-y-10">
       <h1 className="text-5xl font-bold text-cyan-400 drop-shadow-[0_0_25px_cyan] animate-pulse">
-        Laundry POS Dashboard
+        MJ Laundry Dashboard
       </h1>
 
       {/* Summary Cards */}

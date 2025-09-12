@@ -15,7 +15,7 @@ export default function HomePage() {
       {/* Konten Utama */}
       <div className="flex flex-col items-center justify-center flex-1 p-6 text-center space-y-8">
         <h1 className="text-6xl font-extrabold text-cyan-400 drop-shadow-[0_0_20px_rgba(0,255,255,0.8)] animate-pulse">
-          POS Laundry
+          MJ Laundry
         </h1>
         <p className="text-xl text-cyan-200 drop-shadow-[0_0_10px_rgba(0,255,255,0.5)] max-w-xl mx-auto">
           Selamat datang! Pilih menu Customers atau Orders untuk memulai.
@@ -38,7 +38,7 @@ export default function HomePage() {
 
       {/* Footer Neon */}
       <footer className="w-full text-center py-4 bg-black/30 border-t border-white/20 text-white/70 drop-shadow-[0_0_10px_rgba(0,255,255,0.4)]">
-        &copy; {new Date().getFullYear()} POS Laundry. All rights reserved.
+        &copy; {new Date().getFullYear()} MJ Laundry. All rights reserved.
       </footer>
     </div>
   );
