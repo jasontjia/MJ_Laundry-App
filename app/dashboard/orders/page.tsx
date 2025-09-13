@@ -196,7 +196,7 @@ export default function OrdersPage() {
   return (
     <div className="p-6 min-h-screen bg-gray-900 text-white">
       <h1 className="text-4xl font-bold text-cyan-400 drop-shadow-[0_0_15px_cyan] mb-6">
-        Orders Dashboard
+        Orders Management
       </h1>
 
       {/* Search / Filter */}

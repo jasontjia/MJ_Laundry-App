@@ -140,7 +140,7 @@ export default function ReportsPage() {
   return (
     <div className="p-6 min-h-screen bg-gray-900 text-white space-y-8">
       <h1 className="text-4xl font-bold text-cyan-400 drop-shadow-[0_0_15px_cyan] mb-6">
-        Reports Dashboard
+        Reports Transactions
       </h1>
 
       {/* Filters */}
