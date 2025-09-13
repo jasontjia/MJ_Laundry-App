@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import useSWR, { mutate } from "swr";
 import Button from "@/components/ui/button";
 import { Order, Customer, Service } from "@/lib/types";
+import '../../globals.css';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -269,6 +270,7 @@ export default function OrdersPage() {
           readOnly
           className="border px-3 py-2 rounded-md bg-gray-700 text-gray-300 cursor-not-allowed"
         />
+
         <Button type="submit" className="px-4 py-2 bg-green-500 rounded-md shadow-[0_0_15px_green] hover:shadow-[0_0_30px_green] text-black">
           Add Order
         </Button>
@@ -396,6 +398,7 @@ export default function OrdersPage() {
                     `Rp ${o.price.toLocaleString("id-ID")}`
                   )}
                 </td>
+                
                 {/* Status */}
                 <td className={`px-4 py-2 ${getStatusColor(o.status)}`}>
                   {editingOrderId === o.id ? (

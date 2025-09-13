@@ -79,10 +79,17 @@ export default function DashboardPage() {
           <div className="text-sm text-gray-300">Total Orders</div>
           <div className="text-2xl font-bold text-cyan-400">{orders.length}</div>
         </div>
-        <div className="bg-gray-800 p-4 rounded-xl shadow-[0_0_25px-green]">
-          <div className="text-sm text-gray-300">Total Revenue</div>
-          <div className="text-2xl font-bold text-green-400">Rp {totalRevenue}</div>
+      <div className="bg-gray-800 p-4 rounded-xl shadow-[0_0_25px-green]">
+        <div className="text-sm text-gray-300">Total Revenue</div>
+        <div className="text-2xl font-bold text-green-400">
+          {totalRevenue.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })}
         </div>
+      </div>
         <div className="bg-gray-800 p-4 rounded-xl shadow-[0_0_25px-yellow]">
           <div className="text-sm text-gray-300">Pending Orders</div>
           <div className="text-2xl font-bold text-yellow-400">{pendingOrders}</div>
@@ -100,8 +107,17 @@ export default function DashboardPage() {
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={barData}>
               <XAxis dataKey="name" stroke="#00ffff" />
-              <YAxis stroke="#00ffff" />
-              <Tooltip />
+              <YAxis
+                stroke="#00ffff"
+                tickFormatter={(value) =>
+                  `Rp ${value.toLocaleString("id-ID", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+                }
+              />
+              <Tooltip
+                formatter={(value) =>
+                  `Rp ${value.toLocaleString("id-ID", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+                }
+              />
               <Bar dataKey="price" fill="#00ffff" />
             </BarChart>
           </ResponsiveContainer>

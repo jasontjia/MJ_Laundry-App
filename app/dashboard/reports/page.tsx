@@ -18,6 +18,7 @@ import {
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import '../../globals.css';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -38,10 +39,10 @@ export default function ReportsPage() {
     return customerMatch && statusMatch;
   });
 
-  // Revenue per day (simple example)
+  // Revenue per day
   const revenuePerDay: { [key: string]: number } = {};
   filteredOrders.forEach((o) => {
-    const day = o.createdAt.split("T")[0]; // yyyy-mm-dd
+    const day = o.createdAt.split("T")[0];
     if (!revenuePerDay[day]) revenuePerDay[day] = 0;
     revenuePerDay[day] += o.price;
   });
@@ -63,10 +64,10 @@ export default function ReportsPage() {
     value,
   }));
 
+  // Export Excel
   const handleExportExcel = () => {
     const ws = XLSX.utils.json_to_sheet(
       filteredOrders.map((o) => ({
-        ID: o.id,
         Customer: o.customer.name,
         Service: o.service,
         Weight: o.weight,
@@ -81,21 +82,58 @@ export default function ReportsPage() {
     XLSX.writeFile(wb, "orders_report.xlsx");
   };
 
+  // Export PDF
+  interface JsPDFWithAutoTable extends jsPDF {
+  lastAutoTable?: { finalY: number };
+}
+
   const handleExportPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF() as JsPDFWithAutoTable;
+
+    // Header
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("MJ Laundry", 105, 15, { align: "center" });
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Jl. Contoh Alamat No.123, Kota, Indonesia", 105, 20, { align: "center" });
+    doc.text("Laporan Transaksi", 105, 28, { align: "center" });
+
+    // Table
     autoTable(doc, {
-      head: [["ID","Customer","Service","Weight","Price","Status","Payment","CreatedAt"]],
+      startY: 35,
+      head: [["Customer","Service","Weight","Price","Status","Payment","CreatedAt"]],
       body: filteredOrders.map((o) => [
-        o.id,
         o.customer.name,
         o.service,
         o.weight,
-        o.price,
+        o.price.toLocaleString("id-ID", { style: "currency", currency: "IDR" }),
         o.status,
         o.payment,
-        o.createdAt,
+        new Date(o.createdAt).toLocaleDateString("id-ID"),
       ]),
+      headStyles: { fillColor: [0,123,255], textColor: 255, halign: "center" },
+      bodyStyles: { fillColor: [245,245,245] },
+      alternateRowStyles: { fillColor: [230,230,230] },
+      styles: { fontSize: 9, cellPadding: 3, overflow: "linebreak" },
     });
+
+    // Footer / total revenue
+    const totalRevenue = filteredOrders.reduce((sum, o) => sum + o.price, 0);
+    const finalY = doc.lastAutoTable?.finalY || 35; // sekarang type-safe
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      `Total Revenue: ${totalRevenue.toLocaleString("id-ID", { 
+        style: "currency", 
+        currency: "IDR",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })}`,
+      105,
+      finalY + 10,
+      { align: "center" }
+    );
+
     doc.save("orders_report.pdf");
   };
 

@@ -5,6 +5,8 @@ import useSWR, { mutate } from "swr";
 import Button from "@/components/ui/button";
 import { Customer } from "@/lib/types";
 import { HiArrowUp, HiArrowDown } from "react-icons/hi";
+import '../../globals.css';
+
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 

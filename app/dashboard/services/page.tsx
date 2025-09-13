@@ -3,6 +3,7 @@
 import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import Button from "@/components/ui/button";
+import '../../globals.css';
 
 interface Service {
   id: number;
