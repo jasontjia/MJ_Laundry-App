@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mysql:8.1
+    container_name: pos_laundry_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pos_laundry
+      MYSQL_USER: mjuser
+      MYSQL_PASSWORD: mjpass
+    ports:
+      - "3307:3306" # host:container
+    volumes:
+      - ./mysql-data:/var/lib/mysql # data tersimpan di folder lokal
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pos_laundry_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  app:
+    build: .
+    container_name: pos_laundry_app
+    working_dir: /app
+    environment:
+      DATABASE_URL: "mysql://mjuser:mjpass@db:3306/pos_laundry"
+      NEXT_PUBLIC_APP_NAME: "MJ Laundry"
+      NODE_ENV: production
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
